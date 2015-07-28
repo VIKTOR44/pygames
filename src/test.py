@@ -1,6 +1,12 @@
 import sys, pygame
 
 class Speed:
+    GO_FORWARD = 1
+    GO_BACKWARD = -1
+    STOP = 0
+    X = 0
+    Y = 1
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -9,18 +15,13 @@ class Speed:
         return [self.x, self.y]
         
     def recalculate_for(self, current_position, destination):
-        self.x = self._x_for(current_position, destination)
-        self.y = self._y_for(current_position, destination)
+        self.x = self._direction_for(current_position[self.X], destination[self.X])
+        self.y = self._direction_for(current_position[self.Y], destination[self.Y])
 
-    def _x_for(self, current_position, destination):
-        if current_position[0] < destination[0]: return 1
-        elif current_position[0] > destination[0]: return -1
-        return 0
-
-    def _y_for(self, current_position, destination):
-        if current_position[1] < destination[1]: return 1
-        elif current_position[1] > destination[1]: return -1
-        return 0
+    def _direction_for(self, current, destination):
+        if current < destination: return self.GO_FORWARD
+        elif current > destination: return self.GO_BACKWARD
+        return self.STOP 
 
 class Bee:
     def __init__(self, rectangle):
